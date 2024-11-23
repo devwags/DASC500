@@ -1,9 +1,9 @@
 from bs4 import BeautifulSoup
 from pathlib import Path
+from const import ROOT_DIR
 
 # Get list of scraped apple files
-directory = '../site_data/apple'
-files = Path(directory).glob('*')
+files = Path(f'{ROOT_DIR}/site_data/apple').glob('*')
 
 # Destination for job titles
 titles = []
