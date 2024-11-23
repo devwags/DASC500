@@ -1,21 +1,17 @@
 from pathlib import Path
-from bs4 import BeautifulSoup
+from const import ROOT_DIR
 import scrapy
 
 class AppleSpider(scrapy.Spider):
   name = "apple"
 
   def start_requests(self):
-    urls = [
-      'https://jobs.apple.com/en-us/search?location=united-states-USA&search=data&sort=relevance&page=1',
-      'https://jobs.apple.com/en-us/search?location=united-states-USA&search=data&sort=relevance&page=2'
-    ]
-
-    for url in urls:
-     yield scrapy.Request(url=url, callback=self.parse)
+    for i in range(1,78):
+     yield scrapy.Request(url=f'https://jobs.apple.com/en-us/search?location=united-states-USA&search=data&sort=relevance&page={i}', callback=self.parse)
 
   def parse(self, response):
-    page = response.request.url[-1]
-    filename = f"apple-{page}.html"
-    Path(filename).write_bytes(response.body)
+    page = response.request.url
+    suffix = str(page).split('=')[-1]
+    filename = f"apple-{suffix}.html"
+    Path(f'{ROOT_DIR}/site_data/apple/{filename}').write_bytes(response.body)
     self.log(f"Saved file {filename}")
