@@ -39,3 +39,61 @@ def make_jobs():
         jobs.append(job)
         id += 1
   return jobs
+
+def extract_summary(tag_element):
+  print(f'Manual Interject: ')
+  summary = tag_element.find('div', {'id': 'jd-job-summary'})
+  if summary is not None:
+    return summary.find('span').contents[0]
+  return None
+
+
+def extract_description(tag_element):
+  description = tag_element.find('div', {'id': 'jd-description'})
+  if description is not None:
+    return description.find('span').contents[0]
+  return None
+
+def extract_min_quals(tag_element):
+  quals = tag_element.find('div', {'id': 'jd-minimum-qualifications'})
+  if quals is not None:
+    results = []
+    list_items = quals.find_all('li', {'role': 'listitem'})
+    for li in list_items:
+      results += li.find('span').contents
+    return results
+  return None
+
+def extract_pref_quals(tag_element):
+  quals = tag_element.find('div', {'id': 'jd-preferred-qualifications'})
+  if quals is not None:
+    results = []
+    list_items = quals.find_all('li', {'role': 'listitem'})
+    for li in list_items:
+      results += li.find('span').contents
+    return results
+  return None
+
+def extract_key_quals(tag_element):
+  quals = tag_element.find('div', {'id': 'jd-key-qualifications'})
+  if quals is not None:
+    results = []
+    list_items = quals.find_all('li', {'role': 'listitem'})
+    for li in list_items:
+      results += li.find('span').contents
+    return results
+  return None
+
+def extract_education_experience(tag_element):
+  xp = tag_element.find('div', {'id': 'jd-education-experience'})
+  if xp is not None:
+    return xp.find('span').contents[0]
+  return None
+
+def extract_pay_range(tag_element):
+  pay_element = tag_element.find('div', {'id': 'jd-posting-supplement-footer-0'})
+  if pay_element is not None:
+    pay_string = str(pay_element.find('span').contents[0])
+    pay_range = re.findall('\$.....?.0', pay_string)
+    return pay_range
+  return None
